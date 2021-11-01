@@ -1,8 +1,6 @@
-# My Paper Title
+# My VRDL HW1
 
-This repository is the official implementation of [My Paper Title](https://arxiv.org/abs/2030.12345). 
-
->📋  Optional: include a graphic explaining your approach/main result, bibtex entry, link to demos, blog posts and tutorials
+Use ViT_B_16 pretrained model to do classification on bird dataset
 
 ## Requirements
 
