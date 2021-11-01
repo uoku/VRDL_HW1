@@ -1,0 +1,9 @@
+# .gitignore
+
+2021VRDL_HW1_datasets/
+checkpoint/
+data/
+logs/
+output/
+answer.*
+models_org/
