@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from torchvision import  models, transforms
+from torchvision import models, transforms
 import torch
 import torch.nn as nn
 from PIL import Image
@@ -14,11 +14,11 @@ with open('./2021VRDL_HW1_datasets/testing_img_order.txt') as f:
 with open('./2021VRDL_HW1_datasets/classes.txt') as f:
     class_ind = [x.strip() for x in f.readlines()]
 
-i=0
+i = 0
 submission = []
 for img in test_images:  # image order is important to your result
     print(i)
-    i+=1
+    i += 1
     # predict
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -43,10 +43,10 @@ for img in test_images:  # image order is important to your result
 
     test_image = Image.open('2021VRDL_HW1_datasets/testing_images/'+img)
 
-
     model.eval()
     with torch.no_grad():
-        validation = torch.stack([image_transforms['validation'](test_image).to(device)])
+        validation = torch.stack(
+            [image_transforms['validation'](test_image).to(device)])
 
         pred = model(validation)[0]
 
@@ -58,4 +58,3 @@ for img in test_images:  # image order is important to your result
     submission.append([img, predicted_class])
 
 np.savetxt('answer.txt', submission, fmt='%s')
-

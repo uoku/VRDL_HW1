@@ -19,7 +19,7 @@ def train_and_valid(model, loss_func, optimizer, epochs=25):
 
     for epoch in range(epochs):
         epoch_start = time.time()
-        print("Epoch: {}/{}".format(epoch+1,epochs))
+        print("Epoch: {}/{}".format(epoch+1, epochs))
 
         model.train()
 
@@ -28,10 +28,9 @@ def train_and_valid(model, loss_func, optimizer, epochs=25):
         valid_loss = 0.0
         valid_acc = 0.0
 
-
         for i, (inputs, labels) in enumerate(train_data):
             inputs = inputs.to(device)
-            
+
             labels = labels.to(device)
 
             optimizer.zero_grad()
@@ -59,19 +58,21 @@ def train_and_valid(model, loss_func, optimizer, epochs=25):
                 valid_loss += loss.item() * inputs.size(0)
 
                 ret, predictions = torch.max(outputs.data, 1)
-                correct_count = predictions.eq(labels.data.view_as(predictions))
+                correct_count = predictions.eq(
+                    labels.data.view_as(predictions))
 
                 acc = torch.mean(correct_count.type(torch.FloatTensor))
 
                 valid_acc += acc.item() * inputs.size(0)
-        
+
         avg_train_loss = train_loss/train_size
         avg_train_acc = train_acc/train_size
 
         avg_valid_loss = valid_loss/valid_size
         avg_valid_acc = valid_acc/valid_size
 
-        history.append([avg_train_loss, avg_valid_loss, avg_train_acc, avg_valid_acc])
+        history.append([avg_train_loss, avg_valid_loss,
+                       avg_train_acc, avg_valid_acc])
 
         if best_acc < avg_valid_acc:
             best_acc = avg_valid_acc
@@ -80,17 +81,20 @@ def train_and_valid(model, loss_func, optimizer, epochs=25):
         epoch_end = time.time()
 
         print("Epoch: {:03d}, Training: Loss: {:.4f}, Accuracy: {:.4f}%, \n\t\tValidation: Loss: {:.4f}, Accuracy: {:.4f}%, Time: {:.4f}s".format(
-            epoch+1, avg_train_loss, avg_train_acc*100, avg_valid_loss, avg_valid_acc*100, epoch_end-epoch_start
+            epoch+1, avg_train_loss, avg_train_acc *
+            100, avg_valid_loss, avg_valid_acc*100, epoch_end-epoch_start
         ))
-        print("Best Accuracy for validation : {:.4f} at epoch {:03d}".format(best_acc, best_epoch))
+        print("Best Accuracy for validation : {:.4f} at epoch {:03d}".format(
+            best_acc, best_epoch))
 
         torch.save(model, './models/model_'+str(epoch+1)+',pt')
 
     return model, history
-            
+
 
 def default_loader(path):
     return Image.open(path).convert('RGB')
+
 
 class Mydataset(Dataset):
     def __init__(self, img_path, label_path, transform=None, loader=default_loader):
@@ -99,7 +103,7 @@ class Mydataset(Dataset):
         for line in label:
             line = line.strip('\n')
             word = line.split()
-            imgs.append((img_path+word[0],int(word[1].split('.')[0])-1))
+            imgs.append((img_path+word[0], int(word[1].split('.')[0])-1))
         self.imgs = imgs
         self.transform = transform
         self.loader = loader
@@ -114,6 +118,7 @@ class Mydataset(Dataset):
     def __len__(self):
         return len(self.imgs)
 
+
 image_transforms = {
     'train': transforms.Compose([
         transforms.RandomResizedCrop(size=256, scale=(0.8, 1.0)),
@@ -122,14 +127,15 @@ image_transforms = {
         transforms.CenterCrop(size=224),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406],
-                            [0.229, 0.224, 0.225])
+                             [0.229, 0.224, 0.225])
     ])
 }
 
 img_path = './2021VRDL_HW1_datasets/training_images/'
 label_path = './2021VRDL_HW1_datasets/training_labels.txt'
 
-train_data = Mydataset(img_path, label_path, transform=image_transforms['train'])
+train_data = Mydataset(img_path, label_path,
+                       transform=image_transforms['train'])
 
 train_size = int(len(train_data) * 0.8)
 valid_size = len(train_data) - train_size
@@ -143,9 +149,8 @@ valid_data = DataLoader(valid_data, batch_size=10, shuffle=True)
 num_class = 200
 
 
-
 res101 = models.resnet101(pretrained=True)
-#for param in res101.parameters():
+# for param in res101.parameters():
 #    param.requires_grad = False
 
 num_fit = res101.fc.in_features
@@ -153,7 +158,7 @@ res101.fc = nn.Sequential(
     nn.Linear(num_fit, 256),
     nn.ReLU(),
     nn.Dropout(0.4),
-    nn.Linear(256,num_class),
+    nn.Linear(256, num_class),
     nn.LogSoftmax(dim=1)
 )
 
@@ -164,6 +169,6 @@ optimizer = optim.Adam(res101.parameters())
 
 num_epochs = 10
 
-train_model, history = train_and_valid(res101, loss_func, optimizer, num_epochs)
+train_model, history = train_and_valid(
+    res101, loss_func, optimizer, num_epochs)
 torch.save(history, './models/_history.pt')
-

@@ -10,6 +10,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, Dataset
 from random import shuffle
 
+
 def train_model(model, criterion, optimizer, num_epochs=3):
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch+1, num_epochs))
@@ -43,13 +44,14 @@ def train_model(model, criterion, optimizer, num_epochs=3):
             epoch_loss = running_loss / len(image_datasets[phase])
             epoch_acc = running_corrects.double() / len(image_datasets[phase])
 
-            print('{} loss: {:.4f}, acc: {:.4f}'.format(phase,
-                                                        epoch_loss,
-                                                        epoch_acc))
+            print('{} loss: {:.4f}, acc: {:.4f}'.format(
+                phase, epoch_loss, epoch_acc))
     return model
+
 
 def default_loader(path):
     return Image.open(path).convert('RGB')
+
 
 class Mydataset(Dataset):
     def __init__(self, img_path, label, transform=None, loader=default_loader):
@@ -57,7 +59,7 @@ class Mydataset(Dataset):
         for line in label:
             line = line.strip('\n')
             word = line.split()
-            imgs.append((img_path+word[0],int(word[1].split('.')[0])-1))
+            imgs.append((img_path+word[0], int(word[1].split('.')[0])-1))
         self.imgs = imgs
         self.transform = transform
         self.loader = loader
@@ -72,21 +74,21 @@ class Mydataset(Dataset):
     def __len__(self):
         return len(self.imgs)
 
+
 image_transforms = {
     'train': transforms.Compose([
-        transforms.Resize((224,224)),
-        transforms.RandomAffine(0, shear=10, scale=(0.8,1.2)),
+        transforms.Resize((224, 224)),
+        transforms.RandomAffine(0, shear=10, scale=(0.8, 1.2)),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                            std=[0.229, 0.224, 0.225])
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[
+                             0.229, 0.224, 0.225])
     ]),
-    'validation':
-    transforms.Compose([
-        transforms.Resize((224,224)),
+    'validation': transforms.Compose([
+        transforms.Resize((224, 224)),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                            std=[0.229, 0.224, 0.225])
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[
+                             0.229, 0.224, 0.225])
     ])
 }
 
@@ -108,9 +110,9 @@ valid_path = all_labels[train_size:]
 
 
 image_datasets = {
-    'train': 
+    'train':
     Mydataset(img_path, train_path, transform=image_transforms['train']),
-    'validation': 
+    'validation':
     Mydataset(img_path, valid_path, transform=image_transforms['validation'])
 }
 
@@ -130,24 +132,20 @@ dataloaders = {
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
-# new model 
-
-#
-
 # model
 model = models.resnet50(pretrained=True).to(device)
 
 for param in model.parameters():
-    param.requires_grad = False   
+    param.requires_grad = False
 
 model.fc = nn.Sequential(
-               nn.Linear(2048, 128),
-               nn.ReLU(inplace=True),
-               nn.Linear(128, num_class)).to(device)
+    nn.Linear(2048, 128),
+    nn.ReLU(inplace=True),
+    nn.Linear(128, num_class)).to(device)
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.fc.parameters())
-# model 
+# model
 
 
 model_trained = train_model(model, criterion, optimizer, num_epochs=500)
