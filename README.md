@@ -44,7 +44,7 @@ You can download pretrained models here:
 
 
 ## Inference
-to reproduce sumiision file 
+to reproduce submission file 
 
 ```Inference
 python3 inference.py
