@@ -36,15 +36,12 @@ To train the model(s) in the paper, run this command:
 python3 train.py --name {name of this train}
 ```
 
->📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
-
 ## Pre-trained Models
 
 You can download pretrained models here:
 
 - [My awesome model](https://drive.google.com/file/d/1vwzQUQb6aSUr1HOE-oM_r4tiBIUiqbnu/view?usp=sharing) 
 
->📋  Give a link to where/how the pretrained models can be downloaded and how they were trained (if applicable).  Alternatively you can have an additional column in your results table with a link to the models.
 
 ## Inference
 to reproduce sumiision file 
