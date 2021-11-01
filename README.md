@@ -22,6 +22,11 @@ tensorboard
 
 ml-collections
 
+## My environment
+GUP: GTX1060
+
+CUDA: 10.2
+cudnn: 7.6.5
 
 ## Training
 
@@ -50,6 +55,13 @@ You can download pretrained models here:
 - [My awesome model](https://drive.google.com/mymodel.pth) 
 
 >📋  Give a link to where/how the pretrained models can be downloaded and how they were trained (if applicable).  Alternatively you can have an additional column in your results table with a link to the models.
+
+## Inference
+to reproduce sumiision file 
+
+```Inference
+python eval.py --model-file mymodel.pth --benchmark imagenet
+```
 
 ## Results
 
