@@ -33,34 +33,21 @@ cudnn: 7.6.5
 To train the model(s) in the paper, run this command:
 
 ```train
-python train.py --input-data <path_to_data> --alpha 10 --beta 20
+python3 train.py --name {name of this train}
 ```
-
->📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
-
-## Evaluation
-
-To evaluate my model on ImageNet, run:
-
-```eval
-python eval.py --model-file mymodel.pth --benchmark imagenet
-```
-
->📋  Describe how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
 
 ## Pre-trained Models
 
 You can download pretrained models here:
 
-- [My awesome model](https://drive.google.com/mymodel.pth) 
+- [My awesome model](https://drive.google.com/file/d/1vwzQUQb6aSUr1HOE-oM_r4tiBIUiqbnu/view?usp=sharing) 
 
->📋  Give a link to where/how the pretrained models can be downloaded and how they were trained (if applicable).  Alternatively you can have an additional column in your results table with a link to the models.
 
 ## Inference
-to reproduce sumiision file 
+to reproduce submission file 
 
 ```Inference
-python eval.py --model-file mymodel.pth --benchmark imagenet
+python3 inference.py
 ```
 
 ## Results
