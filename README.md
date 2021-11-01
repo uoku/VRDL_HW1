@@ -44,7 +44,7 @@ You can download pretrained models here:
 
 
 ## Inference
-to reproduce submission file 
+to reproduce submission file ,you should modify the path to the pre-trained model in inference.py line 41
 
 ```Inference
 python3 inference.py
