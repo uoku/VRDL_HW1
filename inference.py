@@ -38,7 +38,7 @@ for img in test_images:  # image order is important to your result
 
     config = CONFIGS["ViT-B_16"]
     model = VisionTransformer(config, 224, zero_head=True, num_classes=200)
-    model.load_state_dict(torch.load('output/bird2_checkpoint.bin'))
+    model.load_state_dict(torch.load('output/bird_checkpoint.bin'))
     model.to(device)
 
     test_image = Image.open('2021VRDL_HW1_datasets/testing_images/'+img)
